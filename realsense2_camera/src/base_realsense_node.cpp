@@ -1339,9 +1339,11 @@ void BaseRealSenseNode::clip_depth(rs2::depth_frame depth_frame, float clipping_
         for (int x = 0; x < width; x++, ++depth_pixel_index)
         {
             // Check if the depth value is greater than the threashold
+            // skywoodsz: Need to tune
             if (p_depth_frame[depth_pixel_index] > clipping_value)
             {
-                p_depth_frame[depth_pixel_index] = 0; //Set to invalid (<=0) value.
+                // p_depth_frame[depth_pixel_index] = 0; //Set to invalid (<=0) value.
+                p_depth_frame[depth_pixel_index] = 65535;
             }
         }
     }
