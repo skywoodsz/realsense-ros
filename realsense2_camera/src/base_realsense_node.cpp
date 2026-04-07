@@ -1291,6 +1291,7 @@ cv::Mat& BaseRealSenseNode::fix_depth_scale(const cv::Mat& from_image, cv::Mat& 
         return to_image;
     }
 
+    // unused
     if (to_image.size() != from_image.size())
     {
         to_image.create(from_image.rows, from_image.cols, from_image.type());
@@ -1316,6 +1317,14 @@ cv::Mat& BaseRealSenseNode::fix_depth_scale(const cv::Mat& from_image, cv::Mat& 
         p_to = to_image.ptr<uint16_t>(i);
         for ( j = 0; j < nCols; ++j)
         {
+            // skywoodsz
+            // if (p_from[j] * _depth_scale_meters > 1) {
+            //     // p_to[j] = 65535;
+            //     p_to[j] = 0;
+            // } else {
+            //     p_to[j] = p_from[j] * _depth_scale_meters / meter_to_mm;
+            // }
+
             p_to[j] = p_from[j] * _depth_scale_meters / meter_to_mm;
         }
     }
@@ -1343,7 +1352,8 @@ void BaseRealSenseNode::clip_depth(rs2::depth_frame depth_frame, float clipping_
             if (p_depth_frame[depth_pixel_index] > clipping_value)
             {
                 // p_depth_frame[depth_pixel_index] = 0; //Set to invalid (<=0) value.
-                p_depth_frame[depth_pixel_index] = 65535;
+                // p_depth_frame[depth_pixel_index] = 65535;
+                p_depth_frame[depth_pixel_index] = clipping_value;
             }
         }
     }
